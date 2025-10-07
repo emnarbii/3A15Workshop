@@ -3,28 +3,34 @@
 	<table border="1">
 		<tr>
 			<th>id</th>
-			<th>pictures</th>
+			{# <th>pictures</th> #}
 			<th>username</th>
 			<th>email</th>
-			<th>nb_books</th>
+			{# <th>nb_books</th> #}
+			<th>Actions</th>
 		</tr>
-		{% set l = 0 %}
+		{% set total = 0 %}
 		{% for author in authors %}
 			<tr>
 				<td>{{author.id}}</td>
-				<td><img src="{{author.picture}}" alt="image nn dispo" height="150px" width="150px"></td>
-				<td>{{author.username}}</td>
+				{# <td><img src="{{author.picture}}" alt="image nn dispo" height="150px" width="150px"></td> #}
+				<td>{{author.authorName}}</td>
 				<td>{{author.email}}</td>
-				<td>{{author.nb_books}}</td>
-				{% set l= l+ author.nb_books %}
+				{# <td>{{author.nb_books}}</td> #}
+				<td>
+					<a href="{{path("auth_Details",{"id":author.id})}}">Details</a>
+					<a href="{{path("auth_Delete",{"id":author.id})}}">Delete</a>
+
+				</td>
+				{# {% set total= total+ author.nb_books %} #}
 			</tr>
 		{% endfor %}
 		<h2>
 			le tableau comporte
 			{{authors| length}}
-			auteurs avec
-			{{l}}
-			livres
+			{# auteurs avec
+																								{{total}}
+																								livres #}
 
 		</h2>
 	</table>
