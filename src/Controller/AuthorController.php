@@ -114,11 +114,13 @@ final class AuthorController extends AbstractController
             $em->persist($author);
             // éxécuter l'insert dans la base de données
             $em->flush();
+            // redirection vers authorList après l'ajout
+            return $this->redirectToRoute('app_authList');
         }
 
-
-        // redirection vers authorList après l'ajout
-        return $this->redirectToRoute('app_authList');
+        return $this->render('author/form.html.twig', [
+            'addAuth' => $form,
+        ]);
     }
 
 
@@ -127,7 +129,7 @@ final class AuthorController extends AbstractController
     #[Route('/listAuth', name: 'app_authList')]
     public function list(AuthorRepository $authRepo): Response
     {
-        $authors = $authRepo->findAll();
+        $authors = $authRepo->getAllAUthors();
         return $this->render('author/list.html.twig', [
             'authors' => $authors,
         ]);
@@ -153,6 +155,8 @@ final class AuthorController extends AbstractController
     }
 
 
+
+
     // getAuthorByid
     #[Route('/delete/{id}', name: 'auth_Delete')]
     public function delete(EntityManagerInterface $em, $id): Response
@@ -164,5 +168,30 @@ final class AuthorController extends AbstractController
         //exécuter la suppression
         $em->flush();
         return $this->redirectToRoute('app_authList');
+    }
+    #[Route('/update/{id}', name: 'auth_Update')]
+    public function update(EntityManagerInterface $em, Request $request, $id): Response
+    {
+        // Création d’un nouvel objet vide (à remplir via le formulaire)
+        $author = new Author;
+        //select author by ID
+        $author = $em->getRepository(Author::class)->find($id);
+        // Création du formulaire à partir de la classe AuthorType en l'associant à l'objet $author
+        $form = $this->createForm(AuthorType::class, $author);
+        //remplir le formulaire (càd l'objet $author) à partir de la requette HTTP
+        $form->handleRequest($request);
+        // tester le submit
+        if ($form->isSubmitted() && $form->isValid()) {
+            //informer doctrine q'on souhaite ajouter un auteur sans exécuter l'insert
+            $em->persist($author);
+            // éxécuter l'insert dans la base de données
+            $em->flush();
+            // redirection vers authorList après l'ajout
+            return $this->redirectToRoute('app_authList');
+        }
+
+        return $this->render('author/form.html.twig', [
+            'addAuth' => $form,
+        ]);
     }
 }

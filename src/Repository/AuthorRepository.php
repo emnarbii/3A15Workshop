@@ -40,4 +40,20 @@ class AuthorRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    //exemple avec DQL:Doctrine Query Language
+    public function getAllAUthors()
+    {
+        $em = $this->getEntityManager();
+        return $em->createQuery('Select a from App\Entity\Author a')
+            ->getResult();
+    }
+
+     public function getAuthByName($name)
+    {
+        $em = $this->getEntityManager();
+        return $em->createQuery('Select a from App\Entity\Author a where a.username=:name')
+            ->setParameter('name',$name)
+            ->getResult();
+    }
 }

@@ -1,5 +1,6 @@
-{% if authors is defined and authors is not empty %}
+<a href="{{path("author_add")}}">Add new</a>
 
+{% if authors is defined and authors is not empty %}
 	<table border="1">
 		<tr>
 			<th>id</th>
@@ -19,7 +20,8 @@
 				{# <td>{{author.nb_books}}</td> #}
 				<td>
 					<a href="{{path("auth_Details",{"id":author.id})}}">Details</a>
-					<a href="{{path("auth_Delete",{"id":author.id})}}" onclick="return confirm('Supprimer ce produit ?');">Delete</a>
+					<a href="{{path("auth_Update",{"id":author.id})}}" onclick="return confirm('update cet auteur ?');">Update</a>
+					<a href="{{path("auth_Delete",{"id":author.id})}}" onclick="return confirm('Supprimer cet auteur ?');">Delete</a>
 
 				</td>
 				{# {% set total= total+ author.nb_books %} #}
@@ -29,8 +31,8 @@
 			le tableau comporte
 			{{authors| length}}
 			{# auteurs avec
-																								{{total}}
-																								livres #}
+																																				{{total}}
+																																				livres #}
 
 		</h2>
 	</table>
