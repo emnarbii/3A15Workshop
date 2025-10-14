@@ -19,7 +19,7 @@
 				{# <td>{{author.nb_books}}</td> #}
 				<td>
 					<a href="{{path("auth_Details",{"id":author.id})}}">Details</a>
-					<a href="{{path("auth_Delete",{"id":author.id})}}">Delete</a>
+					<a href="{{path("auth_Delete",{"id":author.id})}}" onclick="return confirm('Supprimer ce produit ?');">Delete</a>
 
 				</td>
 				{# {% set total= total+ author.nb_books %} #}

@@ -102,16 +102,22 @@ final class AuthorController extends AbstractController
     #[Route('/add', name: 'author_add')]
     public function add(EntityManagerInterface $em, Request $request): Response
     {
+        // Création d’un nouvel objet vide (à remplir via le formulaire)
         $author = new Author;
+        // Création du formulaire à partir de la classe AuthorType en l'associant à l'objet $author
         $form = $this->createForm(AuthorType::class, $author);
+        //remplir le formulaire (càd l'objet $author) à partir de la requette HTTP
         $form->handleRequest($request);
-        if($form->isSubmitted()){
+        // tester le submit
+        if ($form->isSubmitted()) {
+            //informer doctrine q'on souhaite ajouter un auteur sans exécuter l'insert
             $em->persist($author);
+            // éxécuter l'insert dans la base de données
             $em->flush();
         }
-        
 
-        // return new Response("added with success");
+
+        // redirection vers authorList après l'ajout
         return $this->redirectToRoute('app_authList');
     }
 
@@ -151,13 +157,12 @@ final class AuthorController extends AbstractController
     #[Route('/delete/{id}', name: 'auth_Delete')]
     public function delete(EntityManagerInterface $em, $id): Response
     {
-
         //select author to be deleted
         $author = $em->getRepository(Author::class)->find($id);
-
+        //préparer la requette de suppression
         $em->remove($author);
+        //exécuter la suppression
         $em->flush();
-
         return $this->redirectToRoute('app_authList');
     }
 }
