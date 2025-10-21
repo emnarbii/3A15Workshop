@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/auth')]
 final class AuthorController extends AbstractController
 {
 
@@ -127,11 +128,20 @@ final class AuthorController extends AbstractController
 
     //insert with Author Registry
     #[Route('/listAuth', name: 'app_authList')]
-    public function list(AuthorRepository $authRepo): Response
+    public function list(AuthorRepository $authRepo, Request $req): Response
     {
-        $authors = $authRepo->getAllAUthors();
+
+        // récupérer la valeur de search input from Request by name property
+       $name = $req->query->get('auth');
+
+        if ($name) {
+            $authors = $authRepo->getAuthByName($name);
+        } else {
+            $authors = $authRepo->getAllAUthors();
+        }
         return $this->render('author/list.html.twig', [
             'authors' => $authors,
+            'authName' => $name
         ]);
     }
 

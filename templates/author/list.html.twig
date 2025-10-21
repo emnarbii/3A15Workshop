@@ -1,5 +1,10 @@
-<a href="{{path("author_add")}}">Add new</a>
+<form action="{{path('app_authList')}}">
+	<input type="text" placeholder="tape author name" name="auth" value="{{authName}}">
 
+	<button>search</button>
+</form>
+
+<a href="{{path("author_add")}}">Add new</a>
 {% if authors is defined and authors is not empty %}
 	<table border="1">
 		<tr>
@@ -31,8 +36,8 @@
 			le tableau comporte
 			{{authors| length}}
 			{# auteurs avec
-																																				{{total}}
-																																				livres #}
+																																													{{total}}
+																																													livres #}
 
 		</h2>
 	</table>
